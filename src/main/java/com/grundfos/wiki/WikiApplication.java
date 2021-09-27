@@ -1,5 +1,7 @@
 package com.grundfos.wiki;
 
+import org.mybatis.spring.annotation.MapperScan;
+import org.mybatis.spring.annotation.MapperScans;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +11,7 @@ import org.springframework.core.env.Environment;
 //import java.util.logging.Logger;
 
 @SpringBootApplication
+//@MapperScan("{com.grundfos.wiki.mapper}")
 public class WikiApplication {
 
 	//	自定义化日志
