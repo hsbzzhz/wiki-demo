@@ -7,6 +7,7 @@ import com.grundfos.wiki.entity.EbookExample;
 import com.grundfos.wiki.mapper.EbookMapper;
 import com.grundfos.wiki.req.EbookReq;
 import com.grundfos.wiki.resp.EbookResp;
+import com.grundfos.wiki.resp.PageResp;
 import com.grundfos.wiki.util.CopyUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,7 +28,7 @@ public class EbookService {
     @Resource
     private EbookMapper ebookMapper;
 
-    public List<EbookResp> list(EbookReq req) {
+    public PageResp<EbookResp> list(EbookReq req) {
         /*
          * 查询语句
          */
@@ -36,7 +37,7 @@ public class EbookService {
         if (!ObjectUtils.isEmpty(req.getName())){
             criteria.andNameLike("%" + req.getName() + "%");
         }
-        PageHelper.startPage(1, 3);
+        PageHelper.startPage(req.getPage(), req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(ebookExample);
 
         PageInfo<Ebook> pageInfo = new PageInfo<>(ebookList);
@@ -52,6 +53,10 @@ public class EbookService {
         // 列表复制
         List<EbookResp> list = CopyUtil.copyList(ebookList, EbookResp.class);
 
-        return list;
+        PageResp<EbookResp> pageResp = new PageResp();
+        pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
+
+        return pageResp;
     }
 }
