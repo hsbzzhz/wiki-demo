@@ -10,6 +10,7 @@ import com.grundfos.wiki.req.EbookSaveReq;
 import com.grundfos.wiki.resp.EbookQueryResp;
 import com.grundfos.wiki.resp.PageResp;
 import com.grundfos.wiki.util.CopyUtil;
+import com.grundfos.wiki.util.SnowFlake;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -25,6 +26,9 @@ public class EbookService {
 
     @Resource
     private EbookMapper ebookMapper;
+
+    @Resource
+    private SnowFlake snowFlake;
 
     public PageResp<EbookQueryResp> list(EbookQueryReq req) {
         /*
@@ -66,10 +70,15 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
+            ebook.setId(snowFlake.nextId());
             ebookMapper.insert(ebook);
         } else {
             // 更新
             ebookMapper.updateByPrimaryKey(ebook);
         }
+    }
+
+    public void delete(Long id){
+        ebookMapper.deleteByPrimaryKey(id);
     }
 }

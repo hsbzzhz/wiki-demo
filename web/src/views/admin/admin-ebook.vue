@@ -3,6 +3,11 @@
         <a-layout-content
                 :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
         >
+            <p>
+                <a-button type="primary" @click="add()" size="large">
+                    新增
+                </a-button>
+            </p>
             <a-table
                     :columns="columns"
                     :row-key="record => record.id"
@@ -19,9 +24,16 @@
                         <a-button type="primary" @click="edit(record)">
                             编辑
                         </a-button>
-                        <a-button type="danger">
-                            删除
-                        </a-button>
+                        <a-popconfirm
+                                title="确认删除ma?"
+                                ok-text="是"
+                                cancel-text="否"
+                                @confirm="handleDelete(record.id)"
+                        >
+                            <a-button type="danger">
+                                删除
+                            </a-button>
+                        </a-popconfirm>
                     </a-space>
                 </template>
             </a-table>
@@ -48,7 +60,7 @@
                 <a-input v-model:value="ebook.category2Id" />
             </a-form-item>
             <a-form-item label="描述">
-                <a-input v-model:value="ebook.desc" type="textarea" />
+                <a-input v-model:value="ebook.description" type="textarea" />
             </a-form-item>
         </a-form>
     </a-modal>
@@ -168,6 +180,26 @@
         ebook.value = record
       };
 
+      /**
+       * 新增
+       */
+      const add = () => {
+        modalVisible.value = true;
+        ebook.value = {};
+      };
+
+      const handleDelete = (id: number) => {
+        axios.delete("/ebook/delete/" + id).then((response) => {
+          const data = response.data;    // data = commonResp
+          if (data.success) {
+            // 重新加载列表
+            handleQuery({
+              page: pagination.value.current,
+              size: pagination.value.pageSize,
+            });
+          }
+        });
+      };
 
       onMounted(() => {
        /**
@@ -187,11 +219,13 @@
         handleTableChange,
 
         edit,
+        add,
 
         ebook,
         modalVisible,
         modalLoading,
-        handleModalOk
+        handleModalOk,
+        handleDelete
       }
     }
   });
