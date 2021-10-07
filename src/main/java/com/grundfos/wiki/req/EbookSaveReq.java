@@ -1,8 +1,11 @@
 package com.grundfos.wiki.req;
 
+import javax.validation.constraints.NotNull;
+
 public class EbookSaveReq {
     private Long id;
 
+    @NotNull(message = "name is not null!")
     private String name;
 
     private Long category1Id;

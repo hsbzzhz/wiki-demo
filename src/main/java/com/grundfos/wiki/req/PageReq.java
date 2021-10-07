@@ -1,8 +1,16 @@
 package com.grundfos.wiki.req;
 
+import org.apache.ibatis.annotations.Mapper;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
 public class PageReq {
+    @NotNull(message = "page is not null!")
     private int page;
 
+    @NotNull(message = "size is not null!")
+    @Max(value = 1000,message = "not over 1000!")
     private int size;
 
     public int getPage() {
