@@ -3,8 +3,10 @@ package com.grundfos.wiki.util;
 import org.springframework.stereotype.Component;
 
 /**
- * Twitter的分布式自增ID雪花算法
- **/
+ *  Twitter的分布式自增ID雪花算法
+ *  解决 雪花算法 Long 精度丢失问题，对应js中的number
+ */
+
 @Component
 public class SnowFlake {
     /**
