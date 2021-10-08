@@ -3,8 +3,11 @@ package com.grundfos.wiki.mapper;
 import com.grundfos.wiki.entity.Category;
 import com.grundfos.wiki.entity.CategoryExample;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface CategoryMapper {
     long countByExample(CategoryExample example);
 
