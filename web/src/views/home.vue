@@ -32,10 +32,10 @@
             <template #renderItem="{ item }">
               <a-list-item key="item.name">
                 <template #actions>
-              <span v-for="{ type, text } in actions" :key="type">
-                <component v-bind:is="type" style="margin-right: 8px" />
-                {{ text }}
-              </span>
+                  <span v-for="{ type, text } in actions" :key="type">
+                   <component v-bind:is="type" style="margin-right: 8px" />
+                   {{ text }}
+                  </span>
                 </template>
                 <a-list-item-meta :description="item.description">
                   <template #title>
@@ -85,8 +85,6 @@ export default defineComponent({
 
     const isShowWelcome = ref(true);
     let categoryId2 = 0;
-
-
 
     const handleQueryEbook = () => {
       axios.get("/ebook/list", {
