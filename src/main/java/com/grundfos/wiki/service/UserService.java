@@ -71,6 +71,7 @@ public class UserService {
         } else {
             // 更新
             user.setLoginName(null); // 更新每次把login name设置为空
+            user.setPassword(null);
             userMapper.updateByPrimaryKeySelective(user);  // 把其他的值进行更新，没有值就不进行更新
         }
     }
