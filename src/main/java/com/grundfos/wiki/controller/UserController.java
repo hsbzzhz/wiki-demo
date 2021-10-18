@@ -1,6 +1,7 @@
 package com.grundfos.wiki.controller;
 
 import com.grundfos.wiki.req.UserQueryReq;
+import com.grundfos.wiki.req.UserResetPasswordReq;
 import com.grundfos.wiki.req.UserSaveReq;
 import com.grundfos.wiki.resp.CommonResp;
 import com.grundfos.wiki.resp.UserQueryResp;
@@ -38,6 +39,14 @@ public class UserController {
     public CommonResp delete(@PathVariable Long id) {
         CommonResp resp = new CommonResp<>();
         userService.delete(id);
+        return resp;
+    }
+
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(req);
         return resp;
     }
 }

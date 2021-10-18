@@ -7,6 +7,7 @@ import com.grundfos.wiki.exception.BusinessException;
 import com.grundfos.wiki.exception.BusinessExceptionCode;
 import com.grundfos.wiki.mapper.UserMapper;
 import com.grundfos.wiki.req.UserQueryReq;
+import com.grundfos.wiki.req.UserResetPasswordReq;
 import com.grundfos.wiki.req.UserSaveReq;
 import com.grundfos.wiki.resp.UserQueryResp;
 import com.grundfos.wiki.resp.PageResp;
@@ -90,5 +91,13 @@ public class UserService {
         } else {
             return userList.get(0);
         }
+    }
+
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 }
