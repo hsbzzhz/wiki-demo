@@ -1,8 +1,12 @@
 package com.grundfos.wiki.service;
 
 import com.grundfos.wiki.entity.Content;
+import com.grundfos.wiki.exception.BusinessException;
+import com.grundfos.wiki.exception.BusinessExceptionCode;
 import com.grundfos.wiki.mapper.ContentMapper;
 import com.grundfos.wiki.mapper.DocMapperCust;
+import com.grundfos.wiki.util.RedisUtil;
+import com.grundfos.wiki.util.RequestContext;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -36,6 +40,9 @@ public class DocService {
 
     @Resource
     private SnowFlake snowFlake;
+
+    @Resource
+    public RedisUtil redisUtil;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -79,6 +86,7 @@ public class DocService {
         if (ObjectUtils.isEmpty(req.getId())) {
             // 新增
             doc.setId(snowFlake.nextId());
+            // 必须set0，default 0 不起作用
             doc.setViewCount(0);
             doc.setVoteCount(0);
             docMapper.insert(doc);
@@ -117,6 +125,20 @@ public class DocService {
             return "";
         } else {
             return content.getContent();
+        }
+    }
+
+    /**
+     * 点赞
+     */
+    public void vote(Long id) {
+        // docMapperCust.increaseVoteCount(id);
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
     }
 }
