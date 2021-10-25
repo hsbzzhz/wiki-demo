@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+<<<<<<< HEAD
 @Service
 @RocketMQMessageListener(consumerGroup = "default", topic = "VOTE_TOPIC")
+=======
+>>>>>>> 179025d368434a519f09e5b41a8353b0dc2977f5
 public class VoteTopicConsumer implements RocketMQListener<MessageExt> {
 
     private static final Logger LOG = LoggerFactory.getLogger(VoteTopicConsumer.class);
