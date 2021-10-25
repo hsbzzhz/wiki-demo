@@ -7,7 +7,6 @@ import com.grundfos.wiki.mapper.ContentMapper;
 import com.grundfos.wiki.mapper.DocMapperCust;
 import com.grundfos.wiki.util.RedisUtil;
 import com.grundfos.wiki.util.RequestContext;
-import com.grundfos.wiki.websocket.WebSocketServer;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -46,7 +45,7 @@ public class DocService {
     public RedisUtil redisUtil;
 
     @Resource
-    public WebSocketServer webSocketServer;
+    public WebsocketService websocketService;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -147,7 +146,7 @@ public class DocService {
 
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
-        webSocketServer.sendInfo("【"+docDb.getName()+"】被点赞！");
+        websocketService.sendInfo("【"+docDb.getName()+"】被点赞！");
     }
 
     public void updateEbookInfo() {
