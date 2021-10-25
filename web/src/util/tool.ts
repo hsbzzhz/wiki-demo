@@ -27,7 +27,6 @@ export class Tool {
     }
   }
 
-
   /**
    * 使用递归将数组转为树形结构
    * 父ID属性为parent
@@ -52,5 +51,17 @@ export class Tool {
       }
     }
     return result;
+  }
+
+  public static uuid (len: number, radix = 62) {
+    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+    const uuid = [];
+    radix = radix || chars.length;
+
+    for (let i = 0; i < len; i++) {
+      uuid[i] = chars[0 | Math.random() * radix];
+    }
+
+    return uuid.join('');
   }
 }

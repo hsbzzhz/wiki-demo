@@ -7,6 +7,7 @@ import com.grundfos.wiki.mapper.ContentMapper;
 import com.grundfos.wiki.mapper.DocMapperCust;
 import com.grundfos.wiki.util.RedisUtil;
 import com.grundfos.wiki.util.RequestContext;
+import com.grundfos.wiki.websocket.WebSocketServer;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,6 +44,9 @@ public class DocService {
 
     @Resource
     public RedisUtil redisUtil;
+
+    @Resource
+    public WebSocketServer webSocketServer;
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -121,7 +125,7 @@ public class DocService {
         Content content = contentMapper.selectByPrimaryKey(id);
         // 文档阅读数+1
         docMapperCust.increaseViewCount(id);
-        if (ObjectUtils.isEmpty(content)){
+        if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
             return content.getContent();
@@ -140,6 +144,10 @@ public class DocService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【"+docDb.getName()+"】被点赞！");
     }
 
     public void updateEbookInfo() {
