@@ -49,9 +49,6 @@ public class DocService {
     @Resource
     public WebsocketService websocketService;
 
-    @Resource
-    private RocketMQTemplate rocketMQTemplate;
-
 
     public List<DocQueryResp> all(Long ebookId) {
         DocExample docExample = new DocExample();
@@ -153,8 +150,7 @@ public class DocService {
 
         // 推送消息
         Doc docDb = docMapper.selectByPrimaryKey(id);
-//        websocketService.sendInfo("【"+docDb.getName()+"】被点赞！");
-        rocketMQTemplate.convertAndSend("VOTE_TOPIC", "【" + docDb.getName() + "】被点赞！");
+        websocketService.sendInfo("【"+docDb.getName()+"】被点赞！");
     }
 
     public void updateEbookInfo() {
