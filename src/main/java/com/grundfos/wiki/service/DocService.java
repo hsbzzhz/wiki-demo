@@ -7,7 +7,6 @@ import com.grundfos.wiki.mapper.ContentMapper;
 import com.grundfos.wiki.mapper.DocMapperCust;
 import com.grundfos.wiki.util.RedisUtil;
 import com.grundfos.wiki.util.RequestContext;
-import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
