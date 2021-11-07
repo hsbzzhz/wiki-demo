@@ -1,0 +1,13 @@
+# 构建容器
+FROM node:lts-alpine
+WORKDIR /app
+
+ADD package.json .
+
+# npm镜像，解决报错而引入
+RUN npm config set registry https://registry.npm.taobao.org
+RUN npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass
+
+RUN npm install
+# 运行
+CMD ["npm", "run", "serve-dev"]

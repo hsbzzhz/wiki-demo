@@ -1,0 +1,14 @@
+version: '2.3'
+
+services:
+  wiki-app:
+    container_name: my-wiki
+    build:
+      context: .
+      dockerfile: wiki-demo\target\api-Dockerfile
+
+  web-app:
+    container_name: web-wiki
+    build:
+      context: .
+      dockerfile: wiki-demo\web\web-Dockerfile

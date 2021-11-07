@@ -2,7 +2,6 @@ package com.grundfos.wiki.job;
 
 import com.grundfos.wiki.service.DocService;
 import com.grundfos.wiki.util.SnowFlake;
-import com.sun.applet2.AppletParameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
